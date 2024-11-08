@@ -22,7 +22,7 @@ def message_handler(message):
 # Handle a server going offline (failing a health check).
 # Handle a server coming back online (passing a health check).
 
-class Server:
+class LoadBalancer:
     def __init__(
         self, host="localhost", port=8080, message_handler=message_handler
     ):
