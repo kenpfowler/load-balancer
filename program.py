@@ -1,37 +1,50 @@
 import getopt, sys
-from Server import Server
+from LoadBalancer import LoadBalancer
 
 # Remove 1st argument from the
 # list of command line arguments
 argument_list = sys.argv[1:]
 
 # Options
-options = "hmo:"
+options = "hps:"
 
 # Long options
-long_options = ["Help", "My_file", "Output="]
+long_options = ["host=", "port=", "servers="]
+
+host = "localhost"
+port = 8080
+
+def split_address(address):
+    host, port = address.split(":")
+    return (host, int(port), True)
+
 
 try:
     # Parsing argument
     arguments, values = getopt.getopt(argument_list, options, long_options)
     
     # checking each argument
-    for currentArgument, currentValue in arguments:
+    for current_argument, current_value in arguments:
 
-        if currentArgument in ("-h", "--Help"):
-            print ("Displaying Help")
+        if current_argument in ("-h", "--host"):
+            host = current_value
+            print (("specified host (% s)") % (current_value))
             
-        elif currentArgument in ("-m", "--My_file"):
-            print ("Displaying file_name:", sys.argv[0])
-            
-        elif currentArgument in ("-o", "--Output"):
-            print (("Enabling special output mode (% s)") % (currentValue))
+        elif current_argument in ("-p", "--port"):
+            port = int(current_value)
+            print (("specified port (% s)") % (current_value))
+
+        elif current_argument in ("-s", "--servers"):
+            raw_address = current_value.split(",")
+            servers = list(map(split_address, raw_address))
+            print (("specified server (% s)") % (current_value))
+
             
 except getopt.error as err:
     # output error, and return with an error code
     print (str(err))
 
 
-server = Server()
+load_balancer = LoadBalancer(host, port, servers)
 
-server.start()
+load_balancer.start()
