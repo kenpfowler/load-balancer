@@ -16,7 +16,7 @@ port = 8080
 
 def split_address(address):
     host, port = address.split(":")
-    return (host, int(port), True)
+    return [host, int(port), True]
 
 
 try:
