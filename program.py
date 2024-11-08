@@ -37,8 +37,6 @@ try:
         elif current_argument in ("-s", "--servers"):
             raw_address = current_value.split(",")
             servers = list(map(split_address, raw_address))
-            print (("specified server (% s)") % (current_value))
-
             
 except getopt.error as err:
     # output error, and return with an error code
